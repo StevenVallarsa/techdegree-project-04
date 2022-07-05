@@ -12,11 +12,12 @@ class Phrase {
 
   addPhraseToDisplay() {
     const ul = document.querySelector("#phrase ul");
-    for (let letter in this.phrase) {
+    for (let letter of this.phrase.split("")) {
+      console.log(letter);
       if (letter === " ") {
-        ul.appendChild("<li class='space'> </li>");
+        ul.insertAdjacentHTML("beforeend", "<li class='space'> </li>");
       } else {
-        ul.appendChild(`<li class="hide letter ${letter}">${letter}</li>`);
+        ul.insertAdjacentHTML("beforeend", `<li class="hide letter ${letter}">${letter}</li>`);
       }
     }
   }
