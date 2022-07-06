@@ -5,8 +5,6 @@
 const start = document.getElementById("btn__reset");
 const keyboard = document.querySelector("#qwerty");
 
-// hearts[0].setAttribute("src", "images/lostHeart.png");
-
 let game;
 
 start.addEventListener("click", () => {

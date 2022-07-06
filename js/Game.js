@@ -13,12 +13,18 @@ class Game {
       "Run to You",
       "Kids in America",
       "Running Up That Hill",
+      "Thriller",
+      "All Night Long",
     ];
     this.activePhrase = null;
     this.phrase = null;
   }
 
+  /**
+   * Game starting point
+   */
   startGame() {
+    document.getElementById("overlay").classList.remove("lose", "win");
     document.getElementById("overlay").style.display = "none";
     this.activePhrase = this.getRandomPhrase();
     this.phrase = new Phrase(this.activePhrase);
@@ -33,29 +39,47 @@ class Game {
     return this.phrases[Math.floor(Math.random() * this.phrases.length)];
   }
 
+  /**
+   * Control center for handling game play.
+   * Each click on a previously clicked button will not produce a result.
+   * @param {string} inputLetter letter from click event in app.js
+   */
   handleInteraction(inputLetter) {
-    const isLetterOnBoard = this.phrase.checkLetter(inputLetter);
+    let repeatValue = false;
+    let isLetterOnBoard = this.phrase.checkLetter(inputLetter);
     const keyboard = document.querySelectorAll("#qwerty button");
     keyboard.forEach(letter => {
       if (letter.innerText === inputLetter) {
-        if (isLetterOnBoard) letter.classList.add("chosen");
-        else letter.classList.add("wrong");
+        if (letter.classList.contains("chosen") || letter.classList.contains("wrong")) {
+          repeatValue = true;
+        }
+        if (isLetterOnBoard && !repeatValue) letter.classList.add("chosen");
+        else if (!isLetterOnBoard && !repeatValue) letter.classList.add("wrong");
       }
     });
+    if (repeatValue) return;
     if (isLetterOnBoard) this.checkForWin();
-    if (!isLetterOnBoard) this.removeLife();
+    else this.removeLife();
   }
 
+  /**
+   * Remove a heart from the screen for each wrong input
+   */
   removeLife() {
     const hearts = document.querySelectorAll("#scoreboard li img");
     hearts[this.missed].setAttribute("src", "images/lostHeart.png");
 
     this.missed += 1;
     if (this.missed === 5) {
+      document.getElementById("game-over-message").innerText = "Sorry, you lost";
+      document.getElementById("overlay").classList.add("lose");
       this.gameOver();
     }
   }
 
+  /**
+   * Check board to see if all tiles are visible
+   */
   checkForWin() {
     const letters = document.querySelectorAll("#phrase li");
     let countLetters = 0;
@@ -63,9 +87,9 @@ class Game {
       if (letter.classList.contains("hide")) countLetters++;
     });
 
-    console.log(countLetters, letters.length);
     if (countLetters === 0) {
-      console.log("YOU WIN");
+      document.getElementById("game-over-message").innerText = "Yay, you win!";
+      document.getElementById("overlay").classList.add("win");
       this.gameOver();
     }
   }
@@ -76,10 +100,6 @@ class Game {
   gameOver() {
     // hide game board
     document.getElementById("overlay").style.display = "";
-
-    //set properties back to default
-    this.activePhrase = null;
-    this.missed = 0;
 
     // return the keyboard back to default
     const keyboard = document.querySelectorAll("#qwerty button");

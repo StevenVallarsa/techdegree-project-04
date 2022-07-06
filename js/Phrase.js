@@ -7,6 +7,9 @@ class Phrase {
     this.phrase = phrase.toLowerCase();
   }
 
+  /**
+   * Adds the chosen phrase to the DOM
+   */
   addPhraseToDisplay() {
     const ul = document.querySelector("#phrase ul");
     ul.innerHTML = ""; // clear board
@@ -19,18 +22,18 @@ class Phrase {
     }
   }
 
+  /**
+   * Check if the input letter is in the phrase
+   * @param {string} inputLetter coming indirectly from click event in app.js
+   * @returns {boolean} true if letter is in phrase
+   */
   checkLetter(inputLetter) {
     const letters = document.querySelectorAll("#phrase li");
     let lettersStart = 0;
     letters.forEach(letter => {
       if (letter.classList.contains("hide")) lettersStart++;
     });
-    letters.forEach(letter => {
-      if (letter.innerText === inputLetter) {
-        letter.classList.remove("hide");
-        letter.classList.add("show");
-      }
-    });
+    this.showMatchedLetters(inputLetter);
     let lettersEnd = 0;
     letters.forEach(letter => {
       if (letter.classList.contains("hide")) lettersEnd++;
@@ -39,5 +42,17 @@ class Phrase {
     return lettersStart !== lettersEnd;
   }
 
-  showMatchedLetters(letter) {}
+  /**
+   * Make the correct letters visible on the board
+   * @param {string} inputLetter coming indirectly from click event in app.js
+   */
+  showMatchedLetters(inputLetter) {
+    const letters = document.querySelectorAll("#phrase li");
+    letters.forEach(letter => {
+      if (letter.innerText === inputLetter) {
+        letter.classList.remove("hide");
+        letter.classList.add("show");
+      }
+    });
+  }
 }
