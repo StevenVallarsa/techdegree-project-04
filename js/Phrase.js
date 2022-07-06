@@ -7,13 +7,10 @@ class Phrase {
     this.phrase = phrase.toLowerCase();
   }
 
-  //      <li class="hide letter w">w</li>
-  //      <li class="space"> </li>
-
   addPhraseToDisplay() {
     const ul = document.querySelector("#phrase ul");
-    for (let letter of this.phrase.split("")) {
-      console.log(letter);
+    ul.innerHTML = ""; // clear board
+    for (let letter of this.phrase) {
       if (letter === " ") {
         ul.insertAdjacentHTML("beforeend", "<li class='space'> </li>");
       } else {
@@ -22,9 +19,25 @@ class Phrase {
     }
   }
 
-  checkLetter() {
-    const letters = document.querySelectorAll("#phrase>li");
+  checkLetter(inputLetter) {
+    const letters = document.querySelectorAll("#phrase li");
+    let lettersStart = 0;
+    letters.forEach(letter => {
+      if (letter.classList.contains("hide")) lettersStart++;
+    });
+    letters.forEach(letter => {
+      if (letter.innerText === inputLetter) {
+        letter.classList.remove("hide");
+        letter.classList.add("show");
+      }
+    });
+    let lettersEnd = 0;
+    letters.forEach(letter => {
+      if (letter.classList.contains("hide")) lettersEnd++;
+    });
+
+    return lettersStart !== lettersEnd;
   }
 
-  showMatchedLetters() {}
+  showMatchedLetters(letter) {}
 }

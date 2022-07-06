@@ -3,17 +3,20 @@
  * app.js */
 
 const start = document.getElementById("btn__reset");
-const hearts = document.querySelectorAll("#scoreboard li");
-const querty = document.querySelector("#qwerty");
+const keyboard = document.querySelector("#qwerty");
 
-console.log(hearts[0].nextElementSibling);
-// hearts[0].nextSiblingElement.removeAttribute("src").setAttribute("scr", "images/lostHeart.png");
-// console.log(hearts);
+// hearts[0].setAttribute("src", "images/lostHeart.png");
+
+let game;
+
 start.addEventListener("click", () => {
-  const game = new Game();
+  game = new Game();
   game.startGame();
 });
 
-querty.addEventListener("click", e => {
-  console.log(e.target.innerText);
+keyboard.addEventListener("click", e => {
+  const letter = e.target.innerText;
+  if (letter.length === 1) {
+    game.handleInteraction(letter);
+  }
 });
