@@ -25,7 +25,7 @@ class Phrase {
 
   /**
    * Check if the input letter is in the phrase
-   * @param {string} inputLetter coming indirectly from click event in app.js
+   * @param   {string}  inputLetter coming indirectly from click event in app.js
    * @returns {boolean} true if letter is in phrase
    */
   checkLetter(inputLetter) {
