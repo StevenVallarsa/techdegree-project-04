@@ -9,13 +9,14 @@ class Phrase {
 
   /**
    * Adds the chosen phrase to the DOM
+   * - Added line breaks between words so words don't get cut at edge of screen
    */
   addPhraseToDisplay() {
     const ul = document.querySelector("#phrase ul");
     ul.innerHTML = ""; // clear board
     for (let letter of this.phrase) {
       if (letter === " ") {
-        ul.insertAdjacentHTML("beforeend", "<li class='space'> </li>");
+        ul.insertAdjacentHTML("beforeend", "<li class='space'> </li><br />");
       } else {
         ul.insertAdjacentHTML("beforeend", `<li class="hide letter ${letter}">${letter}</li>`);
       }

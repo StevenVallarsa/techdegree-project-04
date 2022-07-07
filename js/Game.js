@@ -17,18 +17,19 @@ class Game {
       "All Night Long",
     ];
     this.activePhrase = null;
-    this.phrase = null;
   }
 
   /**
    * Game starting point
    */
   startGame() {
+    // remove previous play's win/lose colors from overlay
     document.getElementById("overlay").classList.remove("lose", "win");
+    // hide overlay
     document.getElementById("overlay").style.display = "none";
-    this.activePhrase = this.getRandomPhrase();
-    this.phrase = new Phrase(this.activePhrase);
-    this.phrase.addPhraseToDisplay();
+    // get phrase and start game
+    this.activePhrase = new Phrase(this.getRandomPhrase());
+    this.activePhrase.addPhraseToDisplay();
   }
 
   /**
@@ -41,12 +42,12 @@ class Game {
 
   /**
    * Control center for handling game play.
-   * Each click on a previously clicked button will not produce a result.
+   * Each click on a previously clicked button will be ignored.
    * @param {string} inputLetter letter from click event in app.js
    */
   handleInteraction(inputLetter) {
-    let repeatValue = false;
-    let isLetterOnBoard = this.phrase.checkLetter(inputLetter);
+    let repeatValue = false; // makes sure keyboard button hasn't already been clicked
+    let isLetterOnBoard = this.activePhrase.checkLetter(inputLetter);
     const keyboard = document.querySelectorAll("#qwerty button");
     keyboard.forEach(letter => {
       if (letter.innerText === inputLetter) {
@@ -63,7 +64,8 @@ class Game {
   }
 
   /**
-   * Remove a heart from the screen for each wrong input
+   * Remove a heart from the screen for each wrong input.
+   * Uses "this.missed" as index value
    */
   removeLife() {
     const hearts = document.querySelectorAll("#scoreboard li img");
@@ -71,7 +73,7 @@ class Game {
 
     this.missed += 1;
     if (this.missed === 5) {
-      document.getElementById("game-over-message").innerText = "Sorry, you lost";
+      document.getElementById("game-over-message").innerText = "Sorry, you lost. Try again?";
       document.getElementById("overlay").classList.add("lose");
       this.gameOver();
     }
@@ -86,9 +88,9 @@ class Game {
     letters.forEach(letter => {
       if (letter.classList.contains("hide")) countLetters++;
     });
-
+    // if no letters contain the class of "hide", then board is completely revealed and player has won
     if (countLetters === 0) {
-      document.getElementById("game-over-message").innerText = "Yay, you win!";
+      document.getElementById("game-over-message").innerText = "Yay, you win! Try again?";
       document.getElementById("overlay").classList.add("win");
       this.gameOver();
     }
@@ -101,7 +103,7 @@ class Game {
     // hide game board
     document.getElementById("overlay").style.display = "";
 
-    // return the keyboard back to default
+    // return colors from keyboard
     const keyboard = document.querySelectorAll("#qwerty button");
     keyboard.forEach(letter => {
       letter.classList.remove("wrong", "chosen");
